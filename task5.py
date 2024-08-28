@@ -30,7 +30,7 @@ def add_edges(graph, node, pos, x=0, y=0, layer=1):
     return graph
 
 
-def draw_tree(tree_root, traversal):
+def draw_tree(tree_root):
     tree = nx.DiGraph()
     pos = {tree_root.id: (0, 0)}
     tree = add_edges(tree, tree_root, pos)
@@ -43,34 +43,55 @@ def draw_tree(tree_root, traversal):
     plt.show()
 
 
+def generate_color_gradient(n):
+    # Generate a color gradient from dark to light
+    return [f'#{int(16 + i * (240 - 16) / (n - 1)):02x}{int(16 + i * (240 - 16) / (n - 1)):02x}{240:02x}' for i in
+            range(n)]
+
+
 def bfs_traversal(root):
     queue = deque([root])
     order = []
+    visited_nodes = []
     while queue:
         node = queue.popleft()
         order.append(node.val)
-        node.color = '#1296F0'
+        visited_nodes.append(node)
         if node.left:
             queue.append(node.left)
         if node.right:
             queue.append(node.right)
+
+    # Assign colors to nodes based on the traversal order
+    color_gradient = generate_color_gradient(len(visited_nodes))
+    for i, node in enumerate(visited_nodes):
+        node.color = color_gradient[i]
+
     return order
 
 
 def dfs_traversal(root):
     stack = [root]
     order = []
+    visited_nodes = []
     while stack:
         node = stack.pop()
         order.append(node.val)
-        node.color = '#1296F0'
+        visited_nodes.append(node)
         if node.right:
             stack.append(node.right)
         if node.left:
             stack.append(node.left)
+
+    # Assign colors to nodes based on the traversal order
+    color_gradient = generate_color_gradient(len(visited_nodes))
+    for i, node in enumerate(visited_nodes):
+        node.color = color_gradient[i]
+
     return order
 
 
+# Initialize the tree
 root = Node(10)
 root.left = Node(5)
 root.right = Node(15)
@@ -79,9 +100,19 @@ root.left.right = Node(8)
 root.right.left = Node(12)
 root.right.right = Node(20)
 
+# Perform BFS traversal and visualize the tree
 print("BFS Traversal Order:", bfs_traversal(root))
-draw_tree(root, bfs_traversal(root))
+draw_tree(root)
 
+# Reset colors before DFS traversal
 root.color = "skyblue"
+root.left.color = "skyblue"
+root.right.color = "skyblue"
+root.left.left.color = "skyblue"
+root.left.right.color = "skyblue"
+root.right.left.color = "skyblue"
+root.right.right.color = "skyblue"
+
+# Perform DFS traversal and visualize the tree
 print("DFS Traversal Order:", dfs_traversal(root))
-draw_tree(root, dfs_traversal(root))
+draw_tree(root)
