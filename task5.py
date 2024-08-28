@@ -44,7 +44,6 @@ def draw_tree(tree_root):
 
 
 def generate_color_gradient(n):
-    # Generate a color gradient from dark to light
     return [f'#{int(16 + i * (240 - 16) / (n - 1)):02x}{int(16 + i * (240 - 16) / (n - 1)):02x}{240:02x}' for i in
             range(n)]
 
@@ -62,7 +61,6 @@ def bfs_traversal(root):
         if node.right:
             queue.append(node.right)
 
-    # Assign colors to nodes based on the traversal order
     color_gradient = generate_color_gradient(len(visited_nodes))
     for i, node in enumerate(visited_nodes):
         node.color = color_gradient[i]
@@ -83,7 +81,6 @@ def dfs_traversal(root):
         if node.left:
             stack.append(node.left)
 
-    # Assign colors to nodes based on the traversal order
     color_gradient = generate_color_gradient(len(visited_nodes))
     for i, node in enumerate(visited_nodes):
         node.color = color_gradient[i]
@@ -91,7 +88,6 @@ def dfs_traversal(root):
     return order
 
 
-# Initialize the tree
 root = Node(10)
 root.left = Node(5)
 root.right = Node(15)
@@ -100,11 +96,9 @@ root.left.right = Node(8)
 root.right.left = Node(12)
 root.right.right = Node(20)
 
-# Perform BFS traversal and visualize the tree
 print("BFS Traversal Order:", bfs_traversal(root))
 draw_tree(root)
 
-# Reset colors before DFS traversal
 root.color = "skyblue"
 root.left.color = "skyblue"
 root.right.color = "skyblue"
@@ -113,6 +107,5 @@ root.left.right.color = "skyblue"
 root.right.left.color = "skyblue"
 root.right.right.color = "skyblue"
 
-# Perform DFS traversal and visualize the tree
 print("DFS Traversal Order:", dfs_traversal(root))
 draw_tree(root)
